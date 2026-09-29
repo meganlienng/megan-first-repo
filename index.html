@@ -1,228 +1,216 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="theme-color" content="#e8eee8">
-	<title>Lucida — A dream reading</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
-	<style>
-		:root {
-			color-scheme: light;
-			--paper: #e8eee8;
-			--ink: #202923;
-			--muted: #69736b;
-			--line: #bfcac0;
-			--green: #3c6550;
-			--deep: #18392e;
-			--rose: #ce715d;
-			--sun: #d9b958;
-			--sans: "DM Sans", sans-serif;
-			--serif: "Playfair Display", Georgia, serif;
-			--mono: "DM Mono", monospace;
-		}
-
-		* { box-sizing: border-box; }
-		body {
-			min-width: 320px;
-			min-height: 100vh;
-			margin: 0;
-			color: var(--ink);
-			background-color: var(--paper);
-			background-image: radial-gradient(ellipse at 48% 32%, rgba(255,255,255,.68), transparent 58%), repeating-linear-gradient(0deg, rgba(28,54,39,.018) 0, rgba(28,54,39,.018) 1px, transparent 1px, transparent 4px);
-			font-family: var(--sans);
-		}
-		button, textarea { font: inherit; }
-		.page { width: min(100% - 64px, 1160px); min-height: 100svh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; }
-		header { height: 82px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
-		.wordmark { display: flex; align-items: center; gap: 11px; color: var(--deep); font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: 0; }
-		.mark { width: 27px; height: 18px; position: relative; display: inline-block; overflow: hidden; border: 1.5px solid var(--green); border-radius: 50% 50% 48% 48%; transform: rotate(-7deg); }
-		.mark::after { content: ""; position: absolute; width: 7px; height: 7px; top: 4px; left: 9px; border-radius: 50%; background: var(--rose); }
-		.header-note, .eyebrow, .field-label, .time-note { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
-		.header-note { display: flex; align-items: center; gap: 9px; }
-		.header-note::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rose); }
-		main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, .95fr); align-items: center; gap: clamp(52px, 9vw, 132px); padding: 48px 0 54px; }
-		.visual { min-width: 0; }
-		.eyebrow { display: flex; align-items: center; gap: 12px; }
-		.eyebrow::before { content: ""; width: 28px; border-top: 1px solid var(--rose); }
-		h1 { max-width: 520px; margin: 22px 0 0; font-family: var(--serif); font-size: clamp(43px, 5.2vw, 70px); font-weight: 500; line-height: 1.04; letter-spacing: 0; }
-		h1 em { color: var(--green); font-weight: 500; }
-		.eye-stage { position: relative; width: min(100%, 510px); height: 228px; margin-top: 37px; display: flex; align-items: center; justify-content: center; gap: 15px; isolation: isolate; }
-		.eye-stage::before { content: ""; position: absolute; inset: 30px -2px 23px; z-index: -1; border-radius: 52% 48% 50% 46%; background: linear-gradient(145deg, rgba(232,238,232,0) 5%, rgba(196,207,195,.58) 50%, rgba(232,238,232,0) 92%); filter: blur(16px); }
-		.eye { position: relative; width: min(46%, 224px); height: 113px; overflow: hidden; background: linear-gradient(180deg, #d9ded6, #f8f5e9 34%, #f8f4e8 72%, #d5d8ce); border: 1px solid rgba(64,74,60,.2); border-radius: 51% 49% 48% 52% / 50% 50% 48% 52%; box-shadow: inset 0 6px 12px rgba(65,76,61,.13), inset 0 -8px 13px rgba(106,76,65,.12), 0 10px 22px rgba(40,62,44,.1); transform: rotate(-2deg); transition: height .65s cubic-bezier(.2,.75,.2,1), border-radius .65s ease, transform .65s ease; }
-		.eye + .eye { transform: rotate(2deg); }
-		.eye::before { content: ""; position: absolute; z-index: 3; inset: -1px -2px auto; height: 50%; background: linear-gradient(180deg, #455b4a, #536954 38%, #73806d 76%, rgba(115,128,109,0)); border-bottom: 2px solid rgba(65,77,60,.8); border-radius: 0 0 50% 50% / 0 0 25% 25%; transform: translateY(-102%); transition: transform .65s cubic-bezier(.2,.75,.2,1); }
-		.eye::after { content: ""; position: absolute; z-index: 3; inset: auto -2px -1px; height: 36%; background: linear-gradient(0deg, #c7c6b7, #dfded1 65%, rgba(223,222,209,0)); border-top: 1px solid rgba(129,105,91,.24); border-radius: 50% 50% 0 0 / 22% 22% 0 0; transform: translateY(106%); transition: transform .65s cubic-bezier(.2,.75,.2,1); }
-		.iris { position: absolute; width: 70px; height: 70px; top: 21px; left: calc(50% - 35px); overflow: hidden; border: 4px solid #483d30; border-radius: 50%; background: repeating-conic-gradient(from 10deg, #9a7745 0deg 5deg, #674f37 7deg 10deg, #ad8b56 12deg 14deg), radial-gradient(circle, #9f8153, #4d654d 70%); box-shadow: inset 0 0 0 3px rgba(236,206,143,.42), inset 0 0 13px 4px rgba(25,35,26,.68), 0 0 0 1px rgba(45,52,39,.4); transition: transform .55s ease; }
-		.iris::before { content: ""; position: absolute; width: 27px; height: 27px; top: 18px; left: 18px; border-radius: 50%; background: radial-gradient(circle at 38% 34%, #1a211c, #111713 65%); }
-		.iris::after { content: ""; position: absolute; width: 14px; height: 10px; top: 10px; left: 13px; border-radius: 50%; background: rgba(255,255,246,.86); filter: blur(1px); }
-		.eye-lashes { position: absolute; z-index: 4; width: 88%; height: 13px; left: 6%; top: -5px; border-top: 2px solid rgba(43,57,45,.66); border-radius: 50%; transition: top .65s ease; }
-		.eye-lashes::before, .eye-lashes::after { content: ""; position: absolute; top: -4px; width: 22px; height: 1px; background: #394b3b; transform: rotate(-19deg); }
-		.eye-lashes::before { left: 8px; }
-		.eye-lashes::after { right: 8px; transform: rotate(19deg); }
-		.closed .eye { height: 15px; border-radius: 50%; transform: rotate(-1deg); box-shadow: 0 4px 8px rgba(40,62,44,.11); }
-		.closed .eye + .eye { transform: rotate(1deg); }
-		.closed .eye::before { transform: translateY(0); }
-		.closed .eye::after { transform: translateY(0); }
-		.closed .eye-lashes { top: 6px; }
-		.closed .iris { transform: scale(.35); }
-		.eye-caption { display: flex; justify-content: space-between; width: min(100%, 510px); padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
-		.reading { align-self: center; padding-top: 25px; }
-		.field-label { display: flex; justify-content: space-between; margin-bottom: 13px; }
-		.field-label span:last-child { color: #8d968e; }
-		textarea { display: block; width: 100%; min-height: 174px; resize: vertical; padding: 18px 20px; border: 1px solid var(--line); border-radius: 2px; outline: none; color: var(--ink); background: rgba(249,250,244,.54); font-family: var(--serif); font-size: 19px; line-height: 1.55; transition: border-color .2s ease, background .2s ease, box-shadow .2s ease; }
-		textarea::placeholder { color: #869087; font-style: italic; }
-		textarea:focus { border-color: var(--green); background: rgba(255,255,249,.78); box-shadow: 0 0 0 3px rgba(60,101,80,.08); }
-		.submit-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 15px; }
-		.time-note { font-size: 9px; letter-spacing: .04em; text-transform: none; }
-		button { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 19px; border: 0; border-radius: 2px; color: #f7f4e9; background: var(--deep); cursor: pointer; font-size: 12px; font-weight: 600; transition: background .2s ease, transform .2s ease; }
-		button:hover { background: var(--green); transform: translateY(-1px); }
-		button:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
-		button:disabled { background: #79887d; cursor: default; transform: none; }
-		button svg { width: 14px; height: 14px; }
-		.result { min-height: 142px; margin-top: 26px; padding-top: 19px; border-top: 1px solid var(--line); animation: arrive .5s cubic-bezier(.2,.75,.2,1) both; }
-		.result[hidden] { display: none; }
-		.result-heading { margin: 0 0 15px; color: var(--muted); font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .09em; text-transform: uppercase; }
-		.words { display: flex; flex-wrap: wrap; gap: 8px; }
-		.word { padding: 6px 10px 7px; border: 1px solid #aab8aa; border-radius: 100px; color: var(--deep); font-family: var(--serif); font-size: 15px; font-style: italic; animation: arrive .45s both; }
-		.word:nth-child(2) { animation-delay: .07s; }
-		.word:nth-child(3) { animation-delay: .14s; }
-		.advice { max-width: 390px; margin: 17px 0 0; font-size: 14px; line-height: 1.6; }
-		.advice::before { content: "TODAY, TRY"; display: block; margin-bottom: 6px; color: var(--rose); font-family: var(--mono); font-size: 9px; letter-spacing: .1em; }
-		.reset { margin-top: 14px; padding: 0; min-height: auto; color: var(--green); background: none; font-size: 11px; text-decoration: underline; text-decoration-color: #a2b1a4; text-underline-offset: 4px; }
-		.reset:hover { color: var(--rose); background: none; transform: none; }
-		footer { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .04em; }
-		footer span:last-child { color: #8b958c; }
-		@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-		@media (max-width: 760px) {
-			.page { width: min(100% - 40px, 540px); }
-			header { height: 68px; }
-			main { grid-template-columns: 1fr; gap: 22px; padding: 39px 0 36px; }
-			h1 { max-width: 420px; font-size: clamp(44px, 11vw, 60px); }
-			.eye-stage { height: 185px; margin-top: 21px; }
-			.eye { height: 89px; }
-			.iris { width: 57px; height: 57px; top: 16px; left: calc(50% - 28.5px); }
-			.iris::before { width: 23px; height: 23px; top: 14px; left: 14px; }
-			.iris::after { width: 11px; height: 8px; top: 8px; left: 10px; }
-			.closed .eye { height: 13px; }
-			.reading { padding-top: 5px; }
-			textarea { min-height: 150px; }
-			footer { min-height: 50px; }
-		}
-		@media (max-width: 420px) {
-			.page { width: calc(100% - 32px); }
-			.header-note { font-size: 8px; }
-			h1 { font-size: 43px; }
-			.eye-stage { height: 157px; }
-			.eye { height: 74px; }
-			.iris { width: 49px; height: 49px; top: 12px; left: calc(50% - 24.5px); }
-			.iris::before { width: 19px; height: 19px; top: 12px; left: 12px; }
-			.iris::after { width: 9px; height: 7px; top: 7px; left: 9px; }
-			.closed .eye { height: 12px; }
-			.time-note { max-width: 145px; line-height: 1.5; }
-			footer { font-size: 8px; }
-		}
-		@media (prefers-reduced-motion: reduce) {
-			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-		}
-	</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What can I cook?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fff0f5;--ink:#3b1c2b;--soft:#835c6d;--line:#edc4d2;--leaf:#d7477c;--lemon:#d9f17c;--white:#fffdfd;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:radial-gradient(ellipse at 14% 8%,#ffe0eb 0,transparent 33%),var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:56px 20px 80px}
+h1{font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.05;font-weight:800;letter-spacing:-.03em;margin:0 0 12px}
+.lead{color:var(--soft);margin:0 0 28px;font-size:1.1rem}
+.box{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--white);border:2px solid var(--ink);border-radius:14px;padding:10px 12px}
+.box:focus-within{outline:3px solid var(--lemon);outline-offset:2px}
+.box input{flex:1;min-width:140px;border:0;outline:0;font:inherit;font-size:1.1rem;padding:6px 4px;background:transparent;color:var(--ink)}
+.tag{display:inline-flex;align-items:center;gap:6px;background:#ffd4e2;border-radius:999px;padding:4px 6px 4px 12px;font-weight:600}
+.tag.dish-tag{background:var(--ink);color:#fff}
+.tag button{border:0;background:rgba(0,0,0,.12);border-radius:50%;width:22px;height:22px;cursor:pointer;font:inherit;line-height:1;color:var(--ink)}
+.tag button:hover{background:rgba(0,0,0,.25)}
+.add{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--soft);font-size:.95rem}
+.add button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:4px 12px;font:inherit;cursor:pointer;color:var(--ink)}
+.add button:hover{border-color:var(--leaf);color:var(--leaf)}
+.hint{color:var(--soft);font-size:.9rem;margin:10px 0 0}
+#results{margin-top:36px}
+.empty{color:var(--soft);border:2px dashed var(--line);border-radius:14px;padding:24px}
+.count{font-weight:600;margin:0 0 4px}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:18px 0;display:grid;grid-template-columns:1fr auto;gap:2px 16px}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
+.name{font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
+.time{color:var(--soft);white-space:nowrap}
+.meta{grid-column:1/-1;font-size:.95rem;color:var(--soft)}
+.full{color:var(--leaf);font-weight:600}
+.bar{grid-column:1/-1;height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--leaf)}
+.body{padding:0 0 22px}
+.body h3{font-size:1rem;margin:0 0 6px}
+.body ul{margin:0 0 14px;padding-left:20px}
+.body ol{margin:0;padding-left:20px}
+.body li{margin-bottom:4px}
+.have{font-weight:600}
+.miss{color:var(--soft)}
+.extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+.extra{min-width:0;padding:12px;background:#ffe4ed;border-top:3px solid var(--leaf);border-radius:4px}
+.extra:nth-child(2){background:#f3f5da;border-color:#879933}
+.extra:nth-child(3){background:#fce6d8;border-color:#dd855c}
+.extra h3{margin:0 0 5px;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.extra p{margin:0;color:var(--soft);font-size:.9rem;line-height:1.4}
+footer{margin-top:40px;color:var(--soft);font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+@media(max-width:520px){main{padding-top:36px}.extras{grid-template-columns:1fr}.extra{padding:10px 12px}}
+</style>
 </head>
 <body>
-	<div class="page">
-		<header>
-			<div class="wordmark"><span class="mark" aria-hidden="true"></span>lucida</div>
-			<div class="header-note">A small reading for the day ahead</div>
-		</header>
-		<main>
-			<section class="visual" aria-labelledby="page-title">
-				<div class="eyebrow">A morning ritual · no. 01</div>
-				<h1 id="page-title">What did the night <em>leave with you?</em></h1>
-				<div class="eye-stage" id="eyes" aria-label="A pair of eyes">
-					<div class="eye" aria-hidden="true"><span class="iris"></span><span class="eye-lashes"></span></div>
-					<div class="eye" aria-hidden="true"><span class="iris"></span><span class="eye-lashes"></span></div>
-				</div>
-				<div class="eye-caption"><span id="eye-status">The day is still a little blurry</span><span>Look inward</span></div>
-			</section>
-			<section class="reading" aria-label="Dream reading">
-				<form id="dream-form">
-					<label class="field-label" for="dream"><span>Remember what you can</span><span>01 / 01</span></label>
-					<textarea id="dream" name="dream" maxlength="900" placeholder="A place, a feeling, a strange little detail…" required></textarea>
-					<div class="submit-row">
-						<span class="time-note">There is no wrong way to remember.</span>
-						<button type="submit"><span>Read my day</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-					</div>
-				</form>
-				<div class="result" id="result" aria-live="polite" hidden>
-					<h2 class="result-heading">A feeling to carry with you</h2>
-					<div class="words" id="words"></div>
-					<p class="advice" id="advice"></p>
-					<button class="reset" id="reset" type="button">Read another dream</button>
-				</div>
-			</section>
-		</main>
-		<footer><span>Dreams are weather, not a forecast.</span><span>A moment to notice, not a rule to follow.</span></footer>
-	</div>
-	<script>
-		const dreamForm = document.querySelector("#dream-form");
-		const dreamInput = document.querySelector("#dream");
-		const eyes = document.querySelector("#eyes");
-		const eyeStatus = document.querySelector("#eye-status");
-		const result = document.querySelector("#result");
-		const words = document.querySelector("#words");
-		const advice = document.querySelector("#advice");
-		const reset = document.querySelector("#reset");
+<main>
+  <h1>What's in your kitchen?</h1>
+  <p class="lead">Tell us what's in the fridge or name the dish you're craving. Get a recipe, a drink pairing and a good time to eat it.</p>
 
-		const readings = [
-			{ match: /water|ocean|sea|river|rain|swim|drown|lake|wave/i, words: ["tender", "in motion", "intuitive"], advice: "Leave a little space in your schedule today. The best thing may arrive between plans." },
-			{ match: /fly|flying|fall|falling|sky|height|float|jump/i, words: ["restless", "brave", "ready"], advice: "Take the small leap you have been rehearsing in your head. It does not need to be perfect." },
-			{ match: /house|home|room|door|window|building|hall/i, words: ["reflective", "rooted", "curious"], advice: "Make one familiar corner feel new: open a window, move a chair, or take another way home." },
-			{ match: /chase|running|run|hide|lost|escape|late/i, words: ["stretched", "alert", "resilient"], advice: "Choose one thing that can wait, and let it wait. Your attention deserves a softer pace." },
-			{ match: /friend|mother|father|family|person|someone|voice|talk/i, words: ["connected", "open", "thoughtful"], advice: "Send the message you keep meaning to send. Keep it simple; presence is enough." },
-			{ match: /teeth|naked|exam|school|work|forgot|can't|couldn't/i, words: ["exposed", "resourceful", "human"], advice: "Let yourself ask one honest question today instead of pretending you already know." },
-			{ match: /animal|dog|cat|bird|horse|snake|wolf|fish/i, words: ["instinctive", "attentive", "alive"], advice: "Trust your first read on a small decision today, then give yourself permission to move on." },
-			{ match: /dead|death|grave|ghost|gone|goodbye/i, words: ["in transition", "tender", "steadfast"], advice: "Honor what has changed without needing to solve it. A quiet walk may do more than an answer." },
-			{ match: /light|sun|bright|garden|flower|green|beautiful/i, words: ["hopeful", "receptive", "bright"], advice: "Say yes to a little pleasure today, especially the kind you would usually call impractical." }
-		];
+  <div class="box" id="box">
+    <input id="in" type="text" placeholder="Ingredients or a dish, e.g. spinach or shakshuka" aria-label="Add ingredients or request a dish" autocomplete="off">
+  </div>
+  <p class="hint">Use commas or a short sentence for ingredients. Name a dish to see its recipe even if you're missing items. Salt, pepper, oil and water are assumed.</p>
+  <div class="add" id="quick"><span>Try an ingredient or dish:</span></div>
 
-		function setEyes(open) {
-			eyes.classList.toggle("closed", !open);
-			eyeStatus.textContent = open ? "The night is coming into focus" : "The day is still a little blurry";
-		}
+  <section id="results" aria-live="polite"></section>
+  <footer>Recipes are flexible ideas. Nutrition notes are general ingredient information, not medical advice.</footer>
+</main>
 
-		dreamInput.addEventListener("focus", () => setEyes(false));
-		dreamInput.addEventListener("input", () => setEyes(false));
-		dreamInput.addEventListener("blur", () => setEyes(dreamInput.value.trim().length > 0));
+<script>
+// name | minutes | ingredients | steps
+const R = [
+["Tomato and egg scramble",10,"egg,tomato,spring onion","Chop the tomato and spring onion.|Fry the tomato for 3 minutes until soft.|Pour in beaten eggs and stir gently until just set."],
+["Chicken fried rice",20,"rice,chicken,egg,pea,soy sauce","Fry diced chicken until cooked through.|Push aside, scramble an egg in the pan.|Add cooked rice and peas, splash in soy sauce, and stir hot for 3 minutes."],
+["Garlic tomato pasta",20,"pasta,tomato,garlic,basil,parmesan","Boil the pasta until tender.|Fry sliced garlic, add chopped tomatoes, and simmer for 10 minutes.|Toss with pasta, torn basil and parmesan."],
+["Spinach and cheese omelette",10,"egg,spinach,cheese,mushroom","Fry sliced mushrooms and spinach until wilted.|Pour beaten eggs over the top.|Add cheese, fold, and serve when set."],
+["Chicken and pepper stir-fry",20,"chicken,bell pepper,onion,soy sauce,rice","Cook rice.|Fry sliced chicken, then add onion and pepper.|Add soy sauce, cook 3 minutes more, and serve over rice."],
+["Bean burrito bowl",15,"black bean,rice,avocado,tomato,lime","Warm the beans and rice.|Dice the tomato and avocado.|Stack in a bowl and squeeze lime over the top."],
+["Creamy mushroom pasta",20,"pasta,mushroom,garlic,cream","Boil the pasta.|Fry mushrooms and garlic until golden.|Stir in cream, add pasta, and simmer for 2 minutes."],
+["Potato and onion frittata",25,"potato,egg,onion,cheese","Fry sliced potato and onion until soft.|Pour in beaten eggs and scatter cheese.|Cook on low until set, then finish under the grill."],
+["Chickpea curry",30,"chickpea,tomato,onion,garlic,coconut milk,rice","Fry onion and garlic, then add curry powder.|Add chickpeas, tomatoes and coconut milk.|Simmer for 15 minutes and serve with rice."],
+["Tuna melt",10,"tuna,bread,cheese,mayo","Mix tuna with mayo.|Spread on bread and top with cheese.|Grill or toast until the cheese bubbles."],
+["Lemon salmon with potatoes",35,"salmon,potato,lemon","Roast chunks of potato for 20 minutes.|Add salmon and lemon slices to the tray.|Roast 12 minutes more until the salmon flakes."],
+["Lentil soup",30,"lentil,carrot,onion,garlic","Fry chopped onion, carrot and garlic.|Add lentils and cover with water.|Simmer for 20 minutes until soft, then season well."],
+["Banana oat pancakes",15,"banana,oat,egg","Mash the banana and mix with oats and an egg.|Spoon small rounds into a hot pan.|Cook 2 minutes per side."],
+["Broccoli cheese rice",20,"broccoli,rice,cheese","Cook rice.|Steam or boil broccoli for 4 minutes.|Stir both together with plenty of cheese."],
+["Egg and avocado toast",10,"avocado,bread,egg,lemon","Toast the bread.|Mash avocado with a squeeze of lemon.|Top with a fried or boiled egg."],
+["Beef tacos",20,"beef,tortilla,onion,cheese,tomato","Brown the beef with chopped onion.|Warm the tortillas.|Fill with beef, tomato and cheese."],
+["Potato and cheese bake",40,"potato,cheese,onion,cream","Slice potatoes and onion thinly.|Layer in a dish with cream and cheese.|Bake at 190C for 30 minutes until golden."],
+["Chicken and rice soup",30,"chicken,rice,carrot,onion","Simmer chicken, onion and carrot in water for 15 minutes.|Add rice and cook 10 minutes.|Shred the chicken back into the pot."]
+].map(([name,mins,ing,steps])=>({name,mins,ing:ing.split(","),steps:steps.split("|")}));
 
-		dreamForm.addEventListener("submit", (event) => {
-			event.preventDefault();
-			const text = dreamInput.value.trim();
-			if (!text) {
-				dreamInput.focus();
-				return;
-			}
-			const reading = readings.find((item) => item.match.test(text)) || {
-				words: ["observant", "unfolding", "open"],
-				advice: "Notice what catches your attention today, even if it seems small. Let curiosity choose the next step."
-			};
-			words.replaceChildren(...reading.words.map((word) => {
-				const chip = document.createElement("span");
-				chip.className = "word";
-				chip.textContent = word;
-				return chip;
-			}));
-			advice.textContent = reading.advice;
-			result.hidden = false;
-			setEyes(true);
-		});
+const norm = s => s.trim().toLowerCase().replace(/[^a-z ]/g,"").split(/\s+/).filter(Boolean).map(word => word.replace(/oes$/,"o").replace(/([^s])s$/,"$1")).join(" ");
+const same = (u, i) => { const n = norm(i); return n === u || n.split(" ").includes(u) || u.split(" ").includes(n); };
+const esc = s => s.replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-		reset.addEventListener("click", () => {
-			dreamForm.reset();
-			result.hidden = true;
-			setEyes(false);
-			dreamInput.focus();
-		});
-	</script>
+let items = [];
+let requestedDish = null;
+const $in = document.getElementById("in"), $box = document.getElementById("box"), $out = document.getElementById("results");
+
+const dishAliases = {
+  "Chicken fried rice": ["fried rice"],
+  "Garlic tomato pasta": ["tomato pasta", "garlic pasta"],
+  "Spinach and cheese omelette": ["spinach omelette", "cheese omelette"],
+  "Bean burrito bowl": ["burrito bowl"],
+  "Lemon salmon with potatoes": ["lemon salmon", "salmon and potatoes"],
+  "Banana oat pancakes": ["oat pancakes", "banana pancakes"]
+};
+const knownIngredients = [...new Set(R.flatMap(recipe => recipe.ing))];
+
+function findDish(value){
+  const query = norm(value);
+  return R.find(recipe => [recipe.name, ...(dishAliases[recipe.name] || [])]
+    .some(name => query.includes(norm(name)))) || null;
+}
+
+function findIngredients(value){
+  const query = ` ${norm(value)} `;
+  return knownIngredients.filter(ingredient => {
+    const name = norm(ingredient);
+    return query.includes(` ${name} `);
+  });
+}
+
+function add(v){
+  const dish = findDish(v);
+  if (dish){ requestedDish = dish; $in.value = ""; render(); return; }
+  const parsed = findIngredients(v);
+  const additions = parsed.length ? parsed : v.split(",").map(x => x.trim()).filter(Boolean);
+  additions.forEach(x => {
+    if (!items.some(y => norm(y) === norm(x))) items.push(x);
+  });
+  $in.value = ""; render();
+}
+function remove(i){ items.splice(i,1); render(); }
+
+function mealNotes(recipe){
+  const name = recipe.name.toLowerCase();
+  const time = /pancake|omelette|scramble|toast/.test(name) ? "Breakfast or a slow brunch" :
+    /soup|tuna melt|burrito bowl/.test(name) ? "Lunch, especially on a busy day" : "Dinner, with time to sit down";
+  const drink = /curry|taco|burrito|stir-fry/.test(name) ? "Ginger-lime sparkling water" :
+    /salmon|tuna/.test(name) ? "Iced green tea with lemon" :
+    /soup/.test(name) ? "Mint tea or cold water" :
+    /pasta|frittata|omelette|scramble|pancake/.test(name) ? "Sparkling water with a strip of citrus" : "Cold water with cucumber";
+  const nourishment = recipe.ing.some(item => /bean|lentil|chickpea|oat/.test(item)) ?
+    "Beans, lentils or oats add fiber and plant-based protein." :
+    recipe.ing.some(item => /egg|chicken|salmon|tuna|beef|cheese/.test(item)) ?
+      "Eggs, fish, meat or cheese contribute protein; portions change the picture." :
+      "Vegetables add variety; exact nutrition depends on ingredients and portions.";
+  return { time, drink, nourishment };
+}
+
+function render(){
+  $box.querySelectorAll(".tag").forEach(t => t.remove());
+  if (requestedDish){
+    const t = document.createElement("span");
+    t.className = "tag dish-tag";
+    t.innerHTML = "Dish: " + esc(requestedDish.name) + '<button type="button" aria-label="Remove dish request">&times;</button>';
+    t.querySelector("button").onclick = () => { requestedDish = null; render(); };
+    $box.insertBefore(t, $in);
+  }
+  items.forEach((x,i) => {
+    const t = document.createElement("span");
+    t.className = "tag";
+    t.innerHTML = esc(x) + '<button type="button" aria-label="Remove ' + esc(x) + '">&times;</button>';
+    t.querySelector("button").onclick = () => remove(i);
+    $box.insertBefore(t, $in);
+  });
+  const us = items.map(norm);
+  const recipes = requestedDish ? [requestedDish] : R;
+  const list = recipes.map(r => {
+    const have = r.ing.filter(i => us.some(u => same(u, i)));
+    return {r, have, miss: r.ing.filter(i => !have.includes(i))};
+    }).filter(m => m.have.length || requestedDish).sort((a,b) => b.have.length - a.have.length || a.miss.length - b.miss.length);
+
+  if (!items.length && !requestedDish){
+    $out.innerHTML = '<div class="empty">Your meal ideas will appear here. Add a few ingredients or ask for a dish by name.</div>';
+    return;
+  }
+  if (!list.length){
+    $out.innerHTML = '<div class="empty">No match yet. Try a dish like "chickpea curry" or ingredients like "eggs, spinach and tomato".</div>';
+    return;
+  }
+  $out.innerHTML = '<p class="count">' + list.length + ' meal' + (list.length > 1 ? "s" : "") + ' you can make</p>' + list.map(m => {
+    const pct = Math.round(m.have.length / m.r.ing.length * 100);
+    const status = m.miss.length ? "Still need: " + esc(m.miss.join(", ")) : '<span class="full">You have everything</span>';
+    const notes = mealNotes(m.r);
+    return '<details><summary><span class="name">' + esc(m.r.name) + '</span><span class="time">' + m.r.mins + ' min</span>' +
+      '<span class="meta">' + status + '</span><span class="bar"><i style="width:' + pct + '%"></i></span></summary>' +
+      '<div class="body"><h3>Ingredients</h3><ul>' +
+      m.r.ing.map(i => '<li class="' + (m.have.includes(i) ? "have" : "miss") + '">' + esc(i) + (m.have.includes(i) ? " (you have it)" : "") + '</li>').join("") +
+      '</ul><h3>Method</h3><ol>' + m.r.steps.map(s => "<li>" + esc(s) + "</li>").join("") + '</ol>' +
+      '<div class="extras"><section class="extra"><h3>Drink pairing</h3><p>' + esc(notes.drink) + '</p></section>' +
+      '<section class="extra"><h3>Best time</h3><p>' + esc(notes.time) + '</p></section>' +
+      '<section class="extra"><h3>Nourishment</h3><p>' + esc(notes.nourishment) + '</p></section></div></div></details>';
+  }).join("");
+}
+
+$in.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === ",") { e.preventDefault(); if ($in.value.trim()) add($in.value); }
+  else if (e.key === "Backspace" && !$in.value && items.length) remove(items.length - 1);
+});
+$in.addEventListener("blur", () => { if ($in.value.trim()) add($in.value); });
+
+const $q = document.getElementById("quick");
+["egg","tomato","chicken","rice","chickpea curry","banana oat pancakes"].forEach(x => {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = x; b.onclick = () => add(x); $q.appendChild(b);
+});
+render();
+</script>
 </body>
 </html>

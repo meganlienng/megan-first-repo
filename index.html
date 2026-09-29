@@ -7,210 +7,146 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
 <style>
-:root{--bg:#fff0f5;--ink:#3b1c2b;--soft:#835c6d;--line:#edc4d2;--leaf:#d7477c;--lemon:#d9f17c;--white:#fffdfd;box-sizing:border-box}
+:root{--bg:#fff0f5;--ink:#3b1c2b;--soft:#835c6d;--line:#edc4d2;--leaf:#d7477c;--lemon:#d9f17c;--white:#fffdfd;--orange:#f08b60;box-sizing:border-box}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:radial-gradient(ellipse at 14% 8%,#ffe0eb 0,transparent 33%),var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
-main{max-width:640px;margin:0 auto;padding:56px 20px 80px}
-h1{font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.05;font-weight:800;letter-spacing:-.03em;margin:0 0 12px}
-.lead{color:var(--soft);margin:0 0 28px;font-size:1.1rem}
-.box{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--white);border:2px solid var(--ink);border-radius:14px;padding:10px 12px}
-.box:focus-within{outline:3px solid var(--lemon);outline-offset:2px}
-.box input{flex:1;min-width:140px;border:0;outline:0;font:inherit;font-size:1.1rem;padding:6px 4px;background:transparent;color:var(--ink)}
-.tag{display:inline-flex;align-items:center;gap:6px;background:#ffd4e2;border-radius:999px;padding:4px 6px 4px 12px;font-weight:600}
-.tag.dish-tag{background:var(--ink);color:#fff}
-.tag button{border:0;background:rgba(0,0,0,.12);border-radius:50%;width:22px;height:22px;cursor:pointer;font:inherit;line-height:1;color:var(--ink)}
-.tag button:hover{background:rgba(0,0,0,.25)}
-.add{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--soft);font-size:.95rem}
-.add button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:4px 12px;font:inherit;cursor:pointer;color:var(--ink)}
-.add button:hover{border-color:var(--leaf);color:var(--leaf)}
-.hint{color:var(--soft);font-size:.9rem;margin:10px 0 0}
-#results{margin-top:36px}
-.empty{color:var(--soft);border:2px dashed var(--line);border-radius:14px;padding:24px}
-.count{font-weight:600;margin:0 0 4px}
-details{border-top:1px solid var(--line)}
-details:last-child{border-bottom:1px solid var(--line)}
-summary{list-style:none;cursor:pointer;padding:18px 0;display:grid;grid-template-columns:1fr auto;gap:2px 16px}
-summary::-webkit-details-marker{display:none}
-summary:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
-.name{font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
-.time{color:var(--soft);white-space:nowrap}
-.meta{grid-column:1/-1;font-size:.95rem;color:var(--soft)}
-.full{color:var(--leaf);font-weight:600}
-.bar{grid-column:1/-1;height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;background:var(--leaf)}
-.body{padding:0 0 22px}
-.body h3{font-size:1rem;margin:0 0 6px}
-.body ul{margin:0 0 14px;padding-left:20px}
-.body ol{margin:0;padding-left:20px}
-.body li{margin-bottom:4px}
-.have{font-weight:600}
-.miss{color:var(--soft)}
-.extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
-.extra{min-width:0;padding:12px;background:#ffe4ed;border-top:3px solid var(--leaf);border-radius:4px}
-.extra:nth-child(2){background:#f3f5da;border-color:#879933}
-.extra:nth-child(3){background:#fce6d8;border-color:#dd855c}
-.extra h3{margin:0 0 5px;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
-.extra p{margin:0;color:var(--soft);font-size:.9rem;line-height:1.4}
-footer{margin-top:40px;color:var(--soft);font-size:.85rem}
-@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
-@media(max-width:520px){main{padding-top:36px}.extras{grid-template-columns:1fr}.extra{padding:10px 12px}}
+body{margin:0;background:repeating-linear-gradient(135deg,transparent 0 30px,rgba(215,71,124,.035) 30px 31px),var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:800px;margin:0 auto;padding:56px 24px 76px}
+.masthead{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line);color:var(--soft);font-size:.75rem;font-weight:600;text-transform:uppercase}
+.masthead strong{color:var(--leaf)}
+.intro{max-width:660px;margin:54px 0 32px}
+.eyebrow,.field-label,.section-label{color:var(--leaf);font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:56px;line-height:1.02;font-weight:800;letter-spacing:0;margin:12px 0}
+h1 em{color:var(--leaf);font-style:normal}
+.lead{max-width:560px;color:var(--soft);margin:0;font-size:1.08rem}
+.field-label{display:block;margin-bottom:9px;color:var(--ink)}
+.box{display:flex;gap:10px;align-items:center;background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:8px}
+.box:focus-within{outline:3px solid var(--lemon);outline-offset:3px}
+.box input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:1.05rem;padding:11px 9px;background:transparent;color:var(--ink)}
+.box input::placeholder{color:#9b7f8b}
+button{border:0;border-radius:7px;background:var(--leaf);padding:12px 17px;color:white;font:inherit;font-weight:800;cursor:pointer}
+button:hover{background:var(--ink)}
+button:focus-visible{outline:3px solid var(--lemon);outline-offset:3px}
+.hint{color:var(--soft);font-size:.88rem;margin:10px 0 0}
+.examples{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:20px;color:var(--soft);font-size:.84rem}
+.examples button{border:1px solid var(--line);background:#fff9fb;border-radius:100px;padding:6px 11px;color:var(--ink);font-size:.82rem;font-weight:600}
+.examples button:hover{border-color:var(--leaf);background:#ffe0eb;color:var(--ink)}
+#results{margin-top:40px}
+.empty{color:var(--soft);border:1px dashed var(--line);border-radius:10px;padding:20px}
+.pairing{border-top:2px solid var(--ink);padding-top:18px}
+.food-label{margin:0;color:var(--soft);font-size:.82rem}
+.drink-name{margin:5px 0 22px;color:var(--ink);font-size:34px;line-height:1.1}
+.pairing-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pairing-note{min-width:0;padding:17px;background:#ffe0eb;border-radius:8px}
+.pairing-note:nth-child(2){background:#f3f5d9}
+.pairing-note:nth-child(3){background:#ffe9d9}
+.pairing-note h2{margin:0 0 8px;color:var(--leaf);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.pairing-note p{margin:0;font-size:.98rem;line-height:1.5}
+.pairing-note:first-child{grid-column:1/-1;background:var(--ink);color:white}
+.pairing-note:first-child h2{color:#ffabc8}
+.pairing-note:first-child p{font-size:1.15rem}
+.pairing-foot{margin:14px 0 0;color:var(--soft);font-size:.8rem}
+footer{margin-top:44px;padding-top:13px;border-top:1px solid var(--line);color:var(--soft);font-size:.8rem}
+@media(max-width:560px){main{padding:32px 18px 54px}.intro{margin:39px 0 27px}h1{font-size:42px}.box{align-items:stretch;flex-direction:column}.box input{width:100%}.box button{width:100%}.pairing-grid{grid-template-columns:1fr}.pairing-note:first-child{grid-column:auto}.drink-name{font-size:29px}}
 </style>
 </head>
 <body>
 <main>
-  <h1>What's in your kitchen?</h1>
-  <p class="lead">Tell us what's in the fridge or name the dish you're craving. Get a recipe, a drink pairing and a good time to eat it.</p>
+  <header class="masthead"><span><strong>Good Measure</strong> / beverage pairing desk</span><span>zero-proof by default</span></header>
+  <section class="intro">
+    <p class="eyebrow">An open-ended pairing machine</p>
+    <h1>What are we drinking <em>with that?</em></h1>
+    <p class="lead">Name a whole dish, one ingredient, or a combination that shouldn't work. Get a drink built to meet its flavor.</p>
+  </section>
 
-  <div class="box" id="box">
-    <input id="in" type="text" placeholder="Ingredients or a dish, e.g. spinach or shakshuka" aria-label="Add ingredients or request a dish" autocomplete="off">
-  </div>
-  <p class="hint">Use commas or a short sentence for ingredients. Name a dish to see its recipe even if you're missing items. Salt, pepper, oil and water are assumed.</p>
-  <div class="add" id="quick"><span>Try an ingredient or dish:</span></div>
+  <form id="pairing-form">
+    <label class="field-label" for="food">What's on the plate?</label>
+    <div class="box">
+      <input id="food" type="text" maxlength="180" placeholder="Kimchi pancakes, burnt honey, sea urchin…" aria-label="Enter any food or ingredient" autocomplete="off" required>
+      <button type="submit">Find a pairing <span aria-hidden="true">↗</span></button>
+    </div>
+  </form>
+  <p class="hint">Use any words you like. Familiar flavor cues fine-tune the match; unusual foods still get a considered contrast.</p>
+  <div class="examples" id="examples"><span>Try a curveball:</span></div>
 
-  <section id="results" aria-live="polite"></section>
-  <footer>Recipes are flexible ideas. Nutrition notes are general ingredient information, not medical advice.</footer>
+  <section id="results" aria-live="polite"><div class="empty">Your pairing will appear here, ready for the first sip.</div></section>
+  <footer>Pairings are generated from flavor cues in your words. All suggestions are alcohol-free and adjustable to taste.</footer>
 </main>
 
 <script>
-// name | minutes | ingredients | steps
-const R = [
-["Tomato and egg scramble",10,"egg,tomato,spring onion","Chop the tomato and spring onion.|Fry the tomato for 3 minutes until soft.|Pour in beaten eggs and stir gently until just set."],
-["Chicken fried rice",20,"rice,chicken,egg,pea,soy sauce","Fry diced chicken until cooked through.|Push aside, scramble an egg in the pan.|Add cooked rice and peas, splash in soy sauce, and stir hot for 3 minutes."],
-["Garlic tomato pasta",20,"pasta,tomato,garlic,basil,parmesan","Boil the pasta until tender.|Fry sliced garlic, add chopped tomatoes, and simmer for 10 minutes.|Toss with pasta, torn basil and parmesan."],
-["Spinach and cheese omelette",10,"egg,spinach,cheese,mushroom","Fry sliced mushrooms and spinach until wilted.|Pour beaten eggs over the top.|Add cheese, fold, and serve when set."],
-["Chicken and pepper stir-fry",20,"chicken,bell pepper,onion,soy sauce,rice","Cook rice.|Fry sliced chicken, then add onion and pepper.|Add soy sauce, cook 3 minutes more, and serve over rice."],
-["Bean burrito bowl",15,"black bean,rice,avocado,tomato,lime","Warm the beans and rice.|Dice the tomato and avocado.|Stack in a bowl and squeeze lime over the top."],
-["Creamy mushroom pasta",20,"pasta,mushroom,garlic,cream","Boil the pasta.|Fry mushrooms and garlic until golden.|Stir in cream, add pasta, and simmer for 2 minutes."],
-["Potato and onion frittata",25,"potato,egg,onion,cheese","Fry sliced potato and onion until soft.|Pour in beaten eggs and scatter cheese.|Cook on low until set, then finish under the grill."],
-["Chickpea curry",30,"chickpea,tomato,onion,garlic,coconut milk,rice","Fry onion and garlic, then add curry powder.|Add chickpeas, tomatoes and coconut milk.|Simmer for 15 minutes and serve with rice."],
-["Tuna melt",10,"tuna,bread,cheese,mayo","Mix tuna with mayo.|Spread on bread and top with cheese.|Grill or toast until the cheese bubbles."],
-["Lemon salmon with potatoes",35,"salmon,potato,lemon","Roast chunks of potato for 20 minutes.|Add salmon and lemon slices to the tray.|Roast 12 minutes more until the salmon flakes."],
-["Lentil soup",30,"lentil,carrot,onion,garlic","Fry chopped onion, carrot and garlic.|Add lentils and cover with water.|Simmer for 20 minutes until soft, then season well."],
-["Banana oat pancakes",15,"banana,oat,egg","Mash the banana and mix with oats and an egg.|Spoon small rounds into a hot pan.|Cook 2 minutes per side."],
-["Broccoli cheese rice",20,"broccoli,rice,cheese","Cook rice.|Steam or boil broccoli for 4 minutes.|Stir both together with plenty of cheese."],
-["Egg and avocado toast",10,"avocado,bread,egg,lemon","Toast the bread.|Mash avocado with a squeeze of lemon.|Top with a fried or boiled egg."],
-["Beef tacos",20,"beef,tortilla,onion,cheese,tomato","Brown the beef with chopped onion.|Warm the tortillas.|Fill with beef, tomato and cheese."],
-["Potato and cheese bake",40,"potato,cheese,onion,cream","Slice potatoes and onion thinly.|Layer in a dish with cream and cheese.|Bake at 190C for 30 minutes until golden."],
-["Chicken and rice soup",30,"chicken,rice,carrot,onion","Simmer chicken, onion and carrot in water for 15 minutes.|Add rice and cook 10 minutes.|Shred the chicken back into the pot."]
-].map(([name,mins,ing,steps])=>({name,mins,ing:ing.split(","),steps:steps.split("|")}));
+const $form = document.getElementById("pairing-form");
+const $food = document.getElementById("food");
+const $results = document.getElementById("results");
 
-const norm = s => s.trim().toLowerCase().replace(/[^a-z ]/g,"").split(/\s+/).filter(Boolean).map(word => word.replace(/oes$/,"o").replace(/([^s])s$/,"$1")).join(" ");
-const same = (u, i) => { const n = norm(i); return n === u || n.split(" ").includes(u) || u.split(" ").includes(n); };
-const esc = s => s.replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const profiles = [
+  { match: /chili|chilli|spicy|hot sauce|pepper|kimchi|curry|harissa|wasabi|szechuan|gochujang/i, style: "cooler", bases: ["chilled coconut water", "cold lemongrass tea"], acids: ["lime", "tamarind", "pink grapefruit"], aromatics: ["mint", "ginger", "Thai basil"], reason: "Cooling, lightly sweet coconut softens chile heat; a tart edge keeps the next bite bright." },
+  { match: /smoky|smoked|charred|barbecue|bbq|grilled|burnt/i, style: "tea highball", bases: ["chilled black tea", "cold roasted barley tea"], acids: ["grapefruit", "bitter orange", "lemon"], aromatics: ["rosemary", "thyme", "orange peel"], reason: "Citrus and tannin lift smoky flavors instead of piling another heavy note on top." },
+  { match: /chocolate|cake|dessert|ice cream|icecream|sweet|honey|pastry|pie|candy|fruit tart/i, style: "spritz", bases: ["tart hibiscus tea", "sour cherry water", "cold rooibos"], acids: ["lime", "blood orange", "sour cherry"], aromatics: ["basil", "mint", "a drop of rosewater"], reason: "A tart, aromatic drink balances sweetness and keeps dessert from feeling heavier." },
+  { match: /fried|crispy|cream|creamy|cheese|butter|bacon|rich|fatty|mayo|pork belly/i, style: "tea spritz", bases: ["strong chilled black tea", "cold jasmine tea"], acids: ["lemon", "pink grapefruit", "verjus"], aromatics: ["basil", "pink peppercorn", "lemon peel"], reason: "Citrus and a dry, tea-like finish cut through richness and reset the palate." },
+  { match: /miso|soy|ferment|fermented|umami|mushroom|seaweed|nori|anchovy|fish sauce|tomato/i, style: "tea fizz", bases: ["cold jasmine green tea", "chilled sencha"], acids: ["yuzu", "green apple", "lemon"], aromatics: ["shiso", "basil", "coriander leaf"], reason: "Green tea and bright fruit meet savory depth without drowning out the food's umami." },
+  { match: /mushroom|beet|beetroot|lentil|earthy|truffle|walnut|root vegetable/i, style: "orchard fizz", bases: ["pear nectar cut with cold water", "cloudy apple juice"], acids: ["lemon", "verjus", "green apple"], aromatics: ["rosemary", "thyme", "ginger"], reason: "Orchard fruit adds a clear, fragrant counterpoint to earthy, deep flavors." },
+  { match: /salad|cucumber|herb|lettuce|melon|ceviche|sashimi|raw fish|fresh|citrus/i, style: "cooler", bases: ["cucumber water", "chilled white tea", "fresh melon juice"], acids: ["lime", "lemon", "green grape"], aromatics: ["basil", "mint", "tarragon"], reason: "Cool aromatics echo the fresh ingredients while a little acidity sharpens their delicate flavors." }
+];
 
-let items = [];
-let requestedDish = null;
-const $in = document.getElementById("in"), $box = document.getElementById("box"), $out = document.getElementById("results");
+const wildcards = [
+  { style: "tea fizz", bases: ["cold ginger tea", "pear nectar cut with sparkling water", "lightly brewed oolong"], acids: ["lime", "tamarind", "blood orange"], aromatics: ["mint", "pink pepper", "thyme"], reason: "A bright, aromatic contrast gives an unfamiliar flavor something lively to push against." },
+  { style: "cooler", bases: ["tart hibiscus tea", "green apple juice", "cold green tea"], acids: ["lemon", "grapefruit", "verjus"], aromatics: ["basil", "rosemary", "ginger"], reason: "Fruit, acidity and a fragrant finish make a flexible counterpoint when the food's flavor is hard to classify." }
+];
 
-const dishAliases = {
-  "Chicken fried rice": ["fried rice"],
-  "Garlic tomato pasta": ["tomato pasta", "garlic pasta"],
-  "Spinach and cheese omelette": ["spinach omelette", "cheese omelette"],
-  "Bean burrito bowl": ["burrito bowl"],
-  "Lemon salmon with potatoes": ["lemon salmon", "salmon and potatoes"],
-  "Banana oat pancakes": ["oat pancakes", "banana pancakes"]
-};
-const knownIngredients = [...new Set(R.flatMap(recipe => recipe.ing))];
-
-function findDish(value){
-  const query = norm(value);
-  return R.find(recipe => [recipe.name, ...(dishAliases[recipe.name] || [])]
-    .some(name => query.includes(norm(name)))) || null;
+function hashText(text){
+  let hash = 2166136261;
+  for (const character of text.toLowerCase()) hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
+  return hash >>> 0;
 }
 
-function findIngredients(value){
-  const query = ` ${norm(value)} `;
-  return knownIngredients.filter(ingredient => {
-    const name = norm(ingredient);
-    return query.includes(` ${name} `);
-  });
+function pick(values, seed, offset){
+  return values[(seed + offset) % values.length];
 }
 
-function add(v){
-  const dish = findDish(v);
-  if (dish){ requestedDish = dish; $in.value = ""; render(); return; }
-  const parsed = findIngredients(v);
-  const additions = parsed.length ? parsed : v.split(",").map(x => x.trim()).filter(Boolean);
-  additions.forEach(x => {
-    if (!items.some(y => norm(y) === norm(x))) items.push(x);
-  });
-  $in.value = ""; render();
-}
-function remove(i){ items.splice(i,1); render(); }
-
-function mealNotes(recipe){
-  const name = recipe.name.toLowerCase();
-  const time = /pancake|omelette|scramble|toast/.test(name) ? "Breakfast or a slow brunch" :
-    /soup|tuna melt|burrito bowl/.test(name) ? "Lunch, especially on a busy day" : "Dinner, with time to sit down";
-  const drink = /curry|taco|burrito|stir-fry/.test(name) ? "Ginger-lime sparkling water" :
-    /salmon|tuna/.test(name) ? "Iced green tea with lemon" :
-    /soup/.test(name) ? "Mint tea or cold water" :
-    /pasta|frittata|omelette|scramble|pancake/.test(name) ? "Sparkling water with a strip of citrus" : "Cold water with cucumber";
-  const nourishment = recipe.ing.some(item => /bean|lentil|chickpea|oat/.test(item)) ?
-    "Beans, lentils or oats add fiber and plant-based protein." :
-    recipe.ing.some(item => /egg|chicken|salmon|tuna|beef|cheese/.test(item)) ?
-      "Eggs, fish, meat or cheese contribute protein; portions change the picture." :
-      "Vegetables add variety; exact nutrition depends on ingredients and portions.";
-  return { time, drink, nourishment };
+function generatePairing(food){
+  const seed = hashText(food);
+  const profile = profiles.find(candidate => candidate.match.test(food)) || pick(wildcards, seed, 0);
+  const base = pick(profile.bases, seed, 2);
+  const acid = pick(profile.acids, seed, 3);
+  const aromatic = pick(profile.aromatics, seed, 4);
+  const capitalize = phrase => phrase.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+  return {
+    name: `${capitalize(acid)} & ${capitalize(aromatic)} ${profile.style}`,
+    build: `Stir ${base} with ${acid} and ${aromatic}. Pour over ice and top with sparkling water. Taste; add a little honey only if the food asks for it.`,
+    why: profile.reason
+  };
 }
 
-function render(){
-  $box.querySelectorAll(".tag").forEach(t => t.remove());
-  if (requestedDish){
-    const t = document.createElement("span");
-    t.className = "tag dish-tag";
-    t.innerHTML = "Dish: " + esc(requestedDish.name) + '<button type="button" aria-label="Remove dish request">&times;</button>';
-    t.querySelector("button").onclick = () => { requestedDish = null; render(); };
-    $box.insertBefore(t, $in);
-  }
-  items.forEach((x,i) => {
-    const t = document.createElement("span");
-    t.className = "tag";
-    t.innerHTML = esc(x) + '<button type="button" aria-label="Remove ' + esc(x) + '">&times;</button>';
-    t.querySelector("button").onclick = () => remove(i);
-    $box.insertBefore(t, $in);
-  });
-  const us = items.map(norm);
-  const recipes = requestedDish ? [requestedDish] : R;
-  const list = recipes.map(r => {
-    const have = r.ing.filter(i => us.some(u => same(u, i)));
-    return {r, have, miss: r.ing.filter(i => !have.includes(i))};
-    }).filter(m => m.have.length || requestedDish).sort((a,b) => b.have.length - a.have.length || a.miss.length - b.miss.length);
-
-  if (!items.length && !requestedDish){
-    $out.innerHTML = '<div class="empty">Your meal ideas will appear here. Add a few ingredients or ask for a dish by name.</div>';
-    return;
-  }
-  if (!list.length){
-    $out.innerHTML = '<div class="empty">No match yet. Try a dish like "chickpea curry" or ingredients like "eggs, spinach and tomato".</div>';
-    return;
-  }
-  $out.innerHTML = '<p class="count">' + list.length + ' meal' + (list.length > 1 ? "s" : "") + ' you can make</p>' + list.map(m => {
-    const pct = Math.round(m.have.length / m.r.ing.length * 100);
-    const status = m.miss.length ? "Still need: " + esc(m.miss.join(", ")) : '<span class="full">You have everything</span>';
-    const notes = mealNotes(m.r);
-    return '<details><summary><span class="name">' + esc(m.r.name) + '</span><span class="time">' + m.r.mins + ' min</span>' +
-      '<span class="meta">' + status + '</span><span class="bar"><i style="width:' + pct + '%"></i></span></summary>' +
-      '<div class="body"><h3>Ingredients</h3><ul>' +
-      m.r.ing.map(i => '<li class="' + (m.have.includes(i) ? "have" : "miss") + '">' + esc(i) + (m.have.includes(i) ? " (you have it)" : "") + '</li>').join("") +
-      '</ul><h3>Method</h3><ol>' + m.r.steps.map(s => "<li>" + esc(s) + "</li>").join("") + '</ol>' +
-      '<div class="extras"><section class="extra"><h3>Drink pairing</h3><p>' + esc(notes.drink) + '</p></section>' +
-      '<section class="extra"><h3>Best time</h3><p>' + esc(notes.time) + '</p></section>' +
-      '<section class="extra"><h3>Nourishment</h3><p>' + esc(notes.nourishment) + '</p></section></div></div></details>';
-  }).join("");
+function showPairing(food){
+  const pairing = generatePairing(food);
+  $results.innerHTML = '<article class="pairing"><p class="food-label">PAIRING FOR <strong id="food-label"></strong></p>' +
+    '<h2 class="drink-name" id="drink-name"></h2><div class="pairing-grid">' +
+    '<section class="pairing-note"><h2>The pour</h2><p id="drink-build"></p></section>' +
+    '<section class="pairing-note"><h2>Why it works</h2><p id="pairing-reason"></p></section>' +
+    '<section class="pairing-note"><h2>Serve it</h2><p>Cold, over plenty of ice. Make it less sweet first; you can always add sweetness.</p></section>' +
+    '</div><p class="pairing-foot">A starting point, not a rule. Adjust the acid, sweetness, or bubbles to your taste.</p></article>';
+  document.getElementById("food-label").textContent = food;
+  document.getElementById("drink-name").textContent = pairing.name;
+  document.getElementById("drink-build").textContent = pairing.build;
+  document.getElementById("pairing-reason").textContent = pairing.why;
 }
 
-$in.addEventListener("keydown", e => {
-  if (e.key === "Enter" || e.key === ",") { e.preventDefault(); if ($in.value.trim()) add($in.value); }
-  else if (e.key === "Backspace" && !$in.value && items.length) remove(items.length - 1);
+$form.addEventListener("submit", event => {
+  event.preventDefault();
+  const food = $food.value.trim();
+  if (food) showPairing(food);
 });
-$in.addEventListener("blur", () => { if ($in.value.trim()) add($in.value); });
 
-const $q = document.getElementById("quick");
-["egg","tomato","chicken","rice","chickpea curry","banana oat pancakes"].forEach(x => {
-  const b = document.createElement("button"); b.type = "button"; b.textContent = x; b.onclick = () => add(x); $q.appendChild(b);
+const examples = document.getElementById("examples");
+["kimchi pancakes", "blue cheese & pear", "burnt honey", "sea urchin"].forEach(food => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = food;
+  button.addEventListener("click", () => {
+    $food.value = food;
+    showPairing(food);
+  });
+  examples.appendChild(button);
 });
-render();
 </script>
 </body>
 </html>

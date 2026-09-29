@@ -1,1 +1,228 @@
-<h1>hello</h1>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#e8eee8">
+	<title>Lucida — A dream reading</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			color-scheme: light;
+			--paper: #e8eee8;
+			--ink: #202923;
+			--muted: #69736b;
+			--line: #bfcac0;
+			--green: #3c6550;
+			--deep: #18392e;
+			--rose: #ce715d;
+			--sun: #d9b958;
+			--sans: "DM Sans", sans-serif;
+			--serif: "Playfair Display", Georgia, serif;
+			--mono: "DM Mono", monospace;
+		}
+
+		* { box-sizing: border-box; }
+		body {
+			min-width: 320px;
+			min-height: 100vh;
+			margin: 0;
+			color: var(--ink);
+			background-color: var(--paper);
+			background-image: radial-gradient(ellipse at 48% 32%, rgba(255,255,255,.68), transparent 58%), repeating-linear-gradient(0deg, rgba(28,54,39,.018) 0, rgba(28,54,39,.018) 1px, transparent 1px, transparent 4px);
+			font-family: var(--sans);
+		}
+		button, textarea { font: inherit; }
+		.page { width: min(100% - 64px, 1160px); min-height: 100svh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; }
+		header { height: 82px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+		.wordmark { display: flex; align-items: center; gap: 11px; color: var(--deep); font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: 0; }
+		.mark { width: 27px; height: 18px; position: relative; display: inline-block; overflow: hidden; border: 1.5px solid var(--green); border-radius: 50% 50% 48% 48%; transform: rotate(-7deg); }
+		.mark::after { content: ""; position: absolute; width: 7px; height: 7px; top: 4px; left: 9px; border-radius: 50%; background: var(--rose); }
+		.header-note, .eyebrow, .field-label, .time-note { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
+		.header-note { display: flex; align-items: center; gap: 9px; }
+		.header-note::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rose); }
+		main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, .95fr); align-items: center; gap: clamp(52px, 9vw, 132px); padding: 48px 0 54px; }
+		.visual { min-width: 0; }
+		.eyebrow { display: flex; align-items: center; gap: 12px; }
+		.eyebrow::before { content: ""; width: 28px; border-top: 1px solid var(--rose); }
+		h1 { max-width: 520px; margin: 22px 0 0; font-family: var(--serif); font-size: clamp(43px, 5.2vw, 70px); font-weight: 500; line-height: 1.04; letter-spacing: 0; }
+		h1 em { color: var(--green); font-weight: 500; }
+		.eye-stage { position: relative; width: min(100%, 510px); height: 228px; margin-top: 37px; display: flex; align-items: center; justify-content: center; gap: 15px; isolation: isolate; }
+		.eye-stage::before { content: ""; position: absolute; inset: 30px -2px 23px; z-index: -1; border-radius: 52% 48% 50% 46%; background: linear-gradient(145deg, rgba(232,238,232,0) 5%, rgba(196,207,195,.58) 50%, rgba(232,238,232,0) 92%); filter: blur(16px); }
+		.eye { position: relative; width: min(46%, 224px); height: 113px; overflow: hidden; background: linear-gradient(180deg, #d9ded6, #f8f5e9 34%, #f8f4e8 72%, #d5d8ce); border: 1px solid rgba(64,74,60,.2); border-radius: 51% 49% 48% 52% / 50% 50% 48% 52%; box-shadow: inset 0 6px 12px rgba(65,76,61,.13), inset 0 -8px 13px rgba(106,76,65,.12), 0 10px 22px rgba(40,62,44,.1); transform: rotate(-2deg); transition: height .65s cubic-bezier(.2,.75,.2,1), border-radius .65s ease, transform .65s ease; }
+		.eye + .eye { transform: rotate(2deg); }
+		.eye::before { content: ""; position: absolute; z-index: 3; inset: -1px -2px auto; height: 50%; background: linear-gradient(180deg, #455b4a, #536954 38%, #73806d 76%, rgba(115,128,109,0)); border-bottom: 2px solid rgba(65,77,60,.8); border-radius: 0 0 50% 50% / 0 0 25% 25%; transform: translateY(-102%); transition: transform .65s cubic-bezier(.2,.75,.2,1); }
+		.eye::after { content: ""; position: absolute; z-index: 3; inset: auto -2px -1px; height: 36%; background: linear-gradient(0deg, #c7c6b7, #dfded1 65%, rgba(223,222,209,0)); border-top: 1px solid rgba(129,105,91,.24); border-radius: 50% 50% 0 0 / 22% 22% 0 0; transform: translateY(106%); transition: transform .65s cubic-bezier(.2,.75,.2,1); }
+		.iris { position: absolute; width: 70px; height: 70px; top: 21px; left: calc(50% - 35px); overflow: hidden; border: 4px solid #483d30; border-radius: 50%; background: repeating-conic-gradient(from 10deg, #9a7745 0deg 5deg, #674f37 7deg 10deg, #ad8b56 12deg 14deg), radial-gradient(circle, #9f8153, #4d654d 70%); box-shadow: inset 0 0 0 3px rgba(236,206,143,.42), inset 0 0 13px 4px rgba(25,35,26,.68), 0 0 0 1px rgba(45,52,39,.4); transition: transform .55s ease; }
+		.iris::before { content: ""; position: absolute; width: 27px; height: 27px; top: 18px; left: 18px; border-radius: 50%; background: radial-gradient(circle at 38% 34%, #1a211c, #111713 65%); }
+		.iris::after { content: ""; position: absolute; width: 14px; height: 10px; top: 10px; left: 13px; border-radius: 50%; background: rgba(255,255,246,.86); filter: blur(1px); }
+		.eye-lashes { position: absolute; z-index: 4; width: 88%; height: 13px; left: 6%; top: -5px; border-top: 2px solid rgba(43,57,45,.66); border-radius: 50%; transition: top .65s ease; }
+		.eye-lashes::before, .eye-lashes::after { content: ""; position: absolute; top: -4px; width: 22px; height: 1px; background: #394b3b; transform: rotate(-19deg); }
+		.eye-lashes::before { left: 8px; }
+		.eye-lashes::after { right: 8px; transform: rotate(19deg); }
+		.closed .eye { height: 15px; border-radius: 50%; transform: rotate(-1deg); box-shadow: 0 4px 8px rgba(40,62,44,.11); }
+		.closed .eye + .eye { transform: rotate(1deg); }
+		.closed .eye::before { transform: translateY(0); }
+		.closed .eye::after { transform: translateY(0); }
+		.closed .eye-lashes { top: 6px; }
+		.closed .iris { transform: scale(.35); }
+		.eye-caption { display: flex; justify-content: space-between; width: min(100%, 510px); padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+		.reading { align-self: center; padding-top: 25px; }
+		.field-label { display: flex; justify-content: space-between; margin-bottom: 13px; }
+		.field-label span:last-child { color: #8d968e; }
+		textarea { display: block; width: 100%; min-height: 174px; resize: vertical; padding: 18px 20px; border: 1px solid var(--line); border-radius: 2px; outline: none; color: var(--ink); background: rgba(249,250,244,.54); font-family: var(--serif); font-size: 19px; line-height: 1.55; transition: border-color .2s ease, background .2s ease, box-shadow .2s ease; }
+		textarea::placeholder { color: #869087; font-style: italic; }
+		textarea:focus { border-color: var(--green); background: rgba(255,255,249,.78); box-shadow: 0 0 0 3px rgba(60,101,80,.08); }
+		.submit-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 15px; }
+		.time-note { font-size: 9px; letter-spacing: .04em; text-transform: none; }
+		button { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 19px; border: 0; border-radius: 2px; color: #f7f4e9; background: var(--deep); cursor: pointer; font-size: 12px; font-weight: 600; transition: background .2s ease, transform .2s ease; }
+		button:hover { background: var(--green); transform: translateY(-1px); }
+		button:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+		button:disabled { background: #79887d; cursor: default; transform: none; }
+		button svg { width: 14px; height: 14px; }
+		.result { min-height: 142px; margin-top: 26px; padding-top: 19px; border-top: 1px solid var(--line); animation: arrive .5s cubic-bezier(.2,.75,.2,1) both; }
+		.result[hidden] { display: none; }
+		.result-heading { margin: 0 0 15px; color: var(--muted); font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .09em; text-transform: uppercase; }
+		.words { display: flex; flex-wrap: wrap; gap: 8px; }
+		.word { padding: 6px 10px 7px; border: 1px solid #aab8aa; border-radius: 100px; color: var(--deep); font-family: var(--serif); font-size: 15px; font-style: italic; animation: arrive .45s both; }
+		.word:nth-child(2) { animation-delay: .07s; }
+		.word:nth-child(3) { animation-delay: .14s; }
+		.advice { max-width: 390px; margin: 17px 0 0; font-size: 14px; line-height: 1.6; }
+		.advice::before { content: "TODAY, TRY"; display: block; margin-bottom: 6px; color: var(--rose); font-family: var(--mono); font-size: 9px; letter-spacing: .1em; }
+		.reset { margin-top: 14px; padding: 0; min-height: auto; color: var(--green); background: none; font-size: 11px; text-decoration: underline; text-decoration-color: #a2b1a4; text-underline-offset: 4px; }
+		.reset:hover { color: var(--rose); background: none; transform: none; }
+		footer { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .04em; }
+		footer span:last-child { color: #8b958c; }
+		@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+		@media (max-width: 760px) {
+			.page { width: min(100% - 40px, 540px); }
+			header { height: 68px; }
+			main { grid-template-columns: 1fr; gap: 22px; padding: 39px 0 36px; }
+			h1 { max-width: 420px; font-size: clamp(44px, 11vw, 60px); }
+			.eye-stage { height: 185px; margin-top: 21px; }
+			.eye { height: 89px; }
+			.iris { width: 57px; height: 57px; top: 16px; left: calc(50% - 28.5px); }
+			.iris::before { width: 23px; height: 23px; top: 14px; left: 14px; }
+			.iris::after { width: 11px; height: 8px; top: 8px; left: 10px; }
+			.closed .eye { height: 13px; }
+			.reading { padding-top: 5px; }
+			textarea { min-height: 150px; }
+			footer { min-height: 50px; }
+		}
+		@media (max-width: 420px) {
+			.page { width: calc(100% - 32px); }
+			.header-note { font-size: 8px; }
+			h1 { font-size: 43px; }
+			.eye-stage { height: 157px; }
+			.eye { height: 74px; }
+			.iris { width: 49px; height: 49px; top: 12px; left: calc(50% - 24.5px); }
+			.iris::before { width: 19px; height: 19px; top: 12px; left: 12px; }
+			.iris::after { width: 9px; height: 7px; top: 7px; left: 9px; }
+			.closed .eye { height: 12px; }
+			.time-note { max-width: 145px; line-height: 1.5; }
+			footer { font-size: 8px; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<header>
+			<div class="wordmark"><span class="mark" aria-hidden="true"></span>lucida</div>
+			<div class="header-note">A small reading for the day ahead</div>
+		</header>
+		<main>
+			<section class="visual" aria-labelledby="page-title">
+				<div class="eyebrow">A morning ritual · no. 01</div>
+				<h1 id="page-title">What did the night <em>leave with you?</em></h1>
+				<div class="eye-stage" id="eyes" aria-label="A pair of eyes">
+					<div class="eye" aria-hidden="true"><span class="iris"></span><span class="eye-lashes"></span></div>
+					<div class="eye" aria-hidden="true"><span class="iris"></span><span class="eye-lashes"></span></div>
+				</div>
+				<div class="eye-caption"><span id="eye-status">The day is still a little blurry</span><span>Look inward</span></div>
+			</section>
+			<section class="reading" aria-label="Dream reading">
+				<form id="dream-form">
+					<label class="field-label" for="dream"><span>Remember what you can</span><span>01 / 01</span></label>
+					<textarea id="dream" name="dream" maxlength="900" placeholder="A place, a feeling, a strange little detail…" required></textarea>
+					<div class="submit-row">
+						<span class="time-note">There is no wrong way to remember.</span>
+						<button type="submit"><span>Read my day</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+					</div>
+				</form>
+				<div class="result" id="result" aria-live="polite" hidden>
+					<h2 class="result-heading">A feeling to carry with you</h2>
+					<div class="words" id="words"></div>
+					<p class="advice" id="advice"></p>
+					<button class="reset" id="reset" type="button">Read another dream</button>
+				</div>
+			</section>
+		</main>
+		<footer><span>Dreams are weather, not a forecast.</span><span>A moment to notice, not a rule to follow.</span></footer>
+	</div>
+	<script>
+		const dreamForm = document.querySelector("#dream-form");
+		const dreamInput = document.querySelector("#dream");
+		const eyes = document.querySelector("#eyes");
+		const eyeStatus = document.querySelector("#eye-status");
+		const result = document.querySelector("#result");
+		const words = document.querySelector("#words");
+		const advice = document.querySelector("#advice");
+		const reset = document.querySelector("#reset");
+
+		const readings = [
+			{ match: /water|ocean|sea|river|rain|swim|drown|lake|wave/i, words: ["tender", "in motion", "intuitive"], advice: "Leave a little space in your schedule today. The best thing may arrive between plans." },
+			{ match: /fly|flying|fall|falling|sky|height|float|jump/i, words: ["restless", "brave", "ready"], advice: "Take the small leap you have been rehearsing in your head. It does not need to be perfect." },
+			{ match: /house|home|room|door|window|building|hall/i, words: ["reflective", "rooted", "curious"], advice: "Make one familiar corner feel new: open a window, move a chair, or take another way home." },
+			{ match: /chase|running|run|hide|lost|escape|late/i, words: ["stretched", "alert", "resilient"], advice: "Choose one thing that can wait, and let it wait. Your attention deserves a softer pace." },
+			{ match: /friend|mother|father|family|person|someone|voice|talk/i, words: ["connected", "open", "thoughtful"], advice: "Send the message you keep meaning to send. Keep it simple; presence is enough." },
+			{ match: /teeth|naked|exam|school|work|forgot|can't|couldn't/i, words: ["exposed", "resourceful", "human"], advice: "Let yourself ask one honest question today instead of pretending you already know." },
+			{ match: /animal|dog|cat|bird|horse|snake|wolf|fish/i, words: ["instinctive", "attentive", "alive"], advice: "Trust your first read on a small decision today, then give yourself permission to move on." },
+			{ match: /dead|death|grave|ghost|gone|goodbye/i, words: ["in transition", "tender", "steadfast"], advice: "Honor what has changed without needing to solve it. A quiet walk may do more than an answer." },
+			{ match: /light|sun|bright|garden|flower|green|beautiful/i, words: ["hopeful", "receptive", "bright"], advice: "Say yes to a little pleasure today, especially the kind you would usually call impractical." }
+		];
+
+		function setEyes(open) {
+			eyes.classList.toggle("closed", !open);
+			eyeStatus.textContent = open ? "The night is coming into focus" : "The day is still a little blurry";
+		}
+
+		dreamInput.addEventListener("focus", () => setEyes(false));
+		dreamInput.addEventListener("input", () => setEyes(false));
+		dreamInput.addEventListener("blur", () => setEyes(dreamInput.value.trim().length > 0));
+
+		dreamForm.addEventListener("submit", (event) => {
+			event.preventDefault();
+			const text = dreamInput.value.trim();
+			if (!text) {
+				dreamInput.focus();
+				return;
+			}
+			const reading = readings.find((item) => item.match.test(text)) || {
+				words: ["observant", "unfolding", "open"],
+				advice: "Notice what catches your attention today, even if it seems small. Let curiosity choose the next step."
+			};
+			words.replaceChildren(...reading.words.map((word) => {
+				const chip = document.createElement("span");
+				chip.className = "word";
+				chip.textContent = word;
+				return chip;
+			}));
+			advice.textContent = reading.advice;
+			result.hidden = false;
+			setEyes(true);
+		});
+
+		reset.addEventListener("click", () => {
+			dreamForm.reset();
+			result.hidden = true;
+			setEyes(false);
+			dreamInput.focus();
+		});
+	</script>
+</body>
+</html>
